@@ -22,7 +22,7 @@ async function createNewUser(user) {
 
 async function getUserByEmail(email) {
     try {
-        const user = UserModel.findOne({ email }).exec();
+        const user = await UserModel.findOne({ email }).exec();
         return user;
     }
     catch (err) {

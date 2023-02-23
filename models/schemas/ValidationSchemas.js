@@ -7,3 +7,9 @@ module.exports.NewUserSchema = Joi.object({
     password: Joi.string().min(4).required(),
     
 });
+
+module.exports.NewShortUrlReqSchema = Joi.object({
+    longUrl: Joi.string().required(),
+    username: Joi.string().min(2).required(),
+
+});

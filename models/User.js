@@ -25,7 +25,7 @@ const userSchema = new mongoose.Schema(
         minLength: [3, "Password should be minimum of 8 characters"],
       },
   
-      tinyCodes: {type: [String], default: []},
+      tinyCodes: {type: [Object], default: []},
     },
     { timestamps: true }
   );

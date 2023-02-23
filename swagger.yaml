@@ -11,6 +11,8 @@ apis: ["./routes/*.js"]
 tags:
   - name: Auth
     description: Authentication
+  - name: Urls
+    description: Urls
 
 paths:
   /auth/register:
@@ -71,8 +73,56 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-          
-
+  /urls/shorten:
+    post:
+      tags:
+        - Urls
+      summary: Shorten a url
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ShortenRequest"
+      responses:
+        "201":
+          description: Url shortened
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ShortenResponse"
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /{code}:
+    get:
+      tags:
+        - Urls
+      summary: Redirect to the original url
+      parameters:
+        - in: path
+          name: code
+          schema:
+            type: string
+          required: true
+          description: The code of the url
+      responses:
+        "302":
+          description: Redirect to the original url
+        "404":
+          description: Url not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
 components:
   schemas:
     User:
@@ -128,4 +178,28 @@ components:
       properties:
         token:
           type: string
+    ShortenRequest:
+      type: object
+      required:
+        - url
+        - username
+      properties:
+        longUrl:
+          type: string
+          format: url
+        username:
+          type: string
+      example:
+        longUrl: "https://www.google.com"
+        username: "test@gmail.com"
+    ShortenResponse:
+      type: object
+      required:
+        - shortUrl
+      properties:
+        shortUrl:
+          type: string
+          format: url
+      example:
+        shortUrl: "http://localhost:3000/1"
       

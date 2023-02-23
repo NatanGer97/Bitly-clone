@@ -8,6 +8,12 @@ const swaggerUi = require("swagger-ui-express");
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
 
+const {redis, setIfNotExists} = require("./services/Redis.Service");
+
+
+
+
+
 const authRouter = require("./routes/auth");
 
 require("dotenv").config();
@@ -31,9 +37,16 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
+app.get('/redis' , async (req , res)=>{
+
+// set if absent
+  res.send(await redis.setNX("te2222st", "test"));
+
+})
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
 app.use("/auth", authRouter);
+app.use("/urls", require("./routes/urls"));
 
 // exceptions handler
 app.use((err, req, res, next) => {
