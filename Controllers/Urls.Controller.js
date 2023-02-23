@@ -47,6 +47,5 @@ const createShortUrl = async (req, res, next) => {
 
 };
 
-const onUrlClick = async (req, res, next) => {};
 
-module.exports = { createShortUrl, onUrlClick };
+module.exports = { createShortUrl };

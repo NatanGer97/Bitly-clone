@@ -11,11 +11,13 @@ router.get("/:code", async (req, res, next) => {
     const codeValue = await redis.get(code);
     if (!codeValue) {
       return res.status(404).json({ error: "Code not found" });
+      
     }
     const { longUrl, username } = JSON.parse(codeValue);
     const user = await UserService.getUserByEmail(username);
     if (user) {
-      
+      await UrlService.onUrlClick(code, longUrl, username);
+
       res.redirect(longUrl);
     } else {
       console.log("User not found");
