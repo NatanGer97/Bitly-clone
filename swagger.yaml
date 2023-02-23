@@ -104,8 +104,6 @@ paths:
                 $ref: "#/components/schemas/Error"
   /{code}:
     get:
-      tags:
-        - Urls
       summary: Redirect to the original url
       parameters:
         - in: path
@@ -119,6 +117,40 @@ paths:
           description: Redirect to the original url
         "404":
           description: Url not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /urls/userUrls:
+    get:
+      tags:
+        - Urls
+      summary: Get all urls
+      parameters:
+        - in: query
+          name: username
+          schema:
+            type: string
+          required: true
+          example: "test@gmail.com"
+          description: The username (email) of the user
+      responses:
+        "200":
+          description: Urls found
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/UserUrls"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "404":
+          description: Urls not found
           content:
             application/json:
               schema:
@@ -202,4 +234,22 @@ components:
           format: url
       example:
         shortUrl: "http://localhost:3000/1"
-      
+    UserUrls:
+      type: object
+      required:
+        - code
+        - longUrl
+        - clicks
+      properties:
+        longUrl:
+          type: string
+          format: url
+        clicks:
+          type: integer
+        code:
+          type: string
+      example:
+        code: "abc"
+        longUrl: "https://www.google.com"
+        clicks: 0
+

@@ -1,4 +1,5 @@
 const Click = require("../models/Click");
+const UserModel = require("../models/User");
 
 const generateCode = () => {
   const codeSize = process.env.SHORT_URL_SIZE;
@@ -21,6 +22,23 @@ const onUrlClick = async (code, longUrl, username) => {
     createdAt: new Date(),
   });
 
-  return newClick;
+  const user = await UserModel.findOne({ email: username }).exec();
+  for (let i = 0; i < user.tinyCodes.length; i++) {
+    if (user.tinyCodes[i].code === code) {
+      user.tinyCodes[i].clicks++;
+      console.log(user.tinyCodes[i]);
+      break;
+    }
+  }
+  await UserModel.updateOne({ email: username }, user).exec();
 };
-module.exports = { generateCode, onUrlClick };
+
+const getUserUrls = async (username) => {
+  try {
+    const user =  await UserModel.findOne({ email: username }).exec();
+    return user.tinyCodes;
+  } catch (err) {
+    throw err;
+  }
+};
+module.exports = { generateCode, onUrlClick, getUserUrls };
