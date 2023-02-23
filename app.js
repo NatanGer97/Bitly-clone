@@ -10,6 +10,8 @@ var usersRouter = require("./routes/users");
 
 const {redis, setIfNotExists} = require("./services/Redis.Service");
 
+const {sequelize} = require("./services/DB");
+
 
 
 
@@ -29,6 +31,10 @@ const db = mongoose.connection;
 db.on("error", () => console.log("connection error:"));
 db.once("open", () => console.log("connected to database"));
 
+// postgress
+sequelize.sync({force: false}).then(() => {
+  console.log("Postgres is connected");
+});
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.use(logger("dev"));
