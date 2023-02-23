@@ -67,4 +67,22 @@ const getUrls = async (req, res, next) => {
   }
 };
 
-module.exports = { createShortUrl, getUrls };
+const getUserUrl = async (req, res, next) => {
+  const { code } = req.params;
+  console.log(code);
+  if (!code) return res.status(400).json({ error: "Code is required" });
+
+  try {
+    const url = await UrlService.getUserUrl(code, 'test@gmail.com');
+    if (!url) {
+      return res.status(404).json({ error: "Url not found" });
+    }
+    return res.status(200).json({ url: url });
+  } catch (err) {
+    console.log(err);
+
+    next(err);
+  }
+}
+
+module.exports = { createShortUrl, getUrls, getUserUrl };

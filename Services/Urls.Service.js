@@ -41,4 +41,15 @@ const getUserUrls = async (username) => {
     throw err;
   }
 };
-module.exports = { generateCode, onUrlClick, getUserUrls };
+
+const getUserUrl = async (code, username) => {
+    try {
+        const urls = await getUserUrls(username);
+        return urls.filter((url) => url.code === code)[0];
+    }
+    catch (err) {
+        throw err;
+    }
+
+};
+module.exports = { generateCode, onUrlClick, getUserUrls, getUserUrl };

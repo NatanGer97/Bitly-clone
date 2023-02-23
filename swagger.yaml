@@ -155,6 +155,37 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
+  /urls/{code}:
+    get:
+      tags:
+        - Urls
+      summary: Get a url
+      parameters:
+        - in: path
+          name: code
+          schema:
+            type: string
+          required: true
+          description: The code of the url
+      responses:
+        "200":
+          description: Url found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserUrls"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "404":
+          description: Url not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
 components:
   schemas:
     User:

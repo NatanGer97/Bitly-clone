@@ -7,6 +7,8 @@ router.get("/userUrls", UrlsController.getUrls);
 
 router.post("/shorten", validateNewShortUrlInput, UrlsController.createShortUrl);
 
+router.get("/:code", UrlsController.getUserUrl);
+
 
 
 module.exports = router;
