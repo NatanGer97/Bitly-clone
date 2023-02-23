@@ -17,6 +17,7 @@ const {sequelize} = require("./Services/DB");
 
 
 const authRouter = require("./routes/auth");
+const verifyJWT = require("./middlewares/auth/VerifyJWT");
 
 require("dotenv").config();
 
@@ -40,6 +41,7 @@ sequelize
   .catch((err) => {
     console.log(err);
   });
+
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.use(logger("dev"));
@@ -48,15 +50,11 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
-app.get('/redis' , async (req , res)=>{
-
-// set if absent
-  res.send(await redis.setNX("te2222st", "test"));
-
-})
 app.use("/", indexRouter);
-app.use("/users", usersRouter);
 app.use("/auth", authRouter);
+
+app.use(verifyJWT)
+app.use("/users", usersRouter);
 app.use("/urls", require("./routes/urls"));
 
 // exceptions handler

@@ -50,6 +50,7 @@ const createShortUrl = async (req, res, next) => {
 
 const getUrls = async (req, res, next) => {
   const { username } = req.query;
+  
   console.log(username);
   if (!username) return res.status(400).json({ error: "Username is required" });
 
@@ -73,7 +74,7 @@ const getUserUrl = async (req, res, next) => {
   if (!code) return res.status(400).json({ error: "Code is required" });
 
   try {
-    const url = await UrlService.getUserUrl(code, 'test@gmail.com');
+    const url = await UrlService.getUserUrl(code, req.user.email);
     if (!url) {
       return res.status(404).json({ error: "Url not found" });
     }

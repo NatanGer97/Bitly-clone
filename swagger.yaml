@@ -75,6 +75,8 @@ paths:
                 $ref: "#/components/schemas/Error"
   /urls/shorten:
     post:
+      security:
+        - BearerAuth: []
       tags:
         - Urls
       summary: Shorten a url
@@ -123,6 +125,8 @@ paths:
                 $ref: "#/components/schemas/Error"
   /urls/userUrls:
     get:
+      security:
+        - BearerAuth: []
       tags:
         - Urls
       summary: Get all urls
@@ -157,6 +161,8 @@ paths:
                 $ref: "#/components/schemas/Error"
   /urls/{code}:
     get:
+      security:
+        - BearerAuth: []
       tags:
         - Urls
       summary: Get a url
@@ -283,4 +289,10 @@ components:
         code: "abc"
         longUrl: "https://www.google.com"
         clicks: 0
-
+  securitySchemes:
+    BearerAuth:
+      scheme: bearer
+      bearerFormat: JWT
+      type: apiKey
+      in: header
+      name: Authorization
