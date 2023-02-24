@@ -13,6 +13,8 @@ tags:
     description: Authentication
   - name: Urls
     description: Urls
+  - name: Statistics
+    description: Statistics
 
 paths:
   /auth/register:
@@ -188,6 +190,40 @@ paths:
                 $ref: "#/components/schemas/Error"
         "404":
           description: Url not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /stats/groupByDate:
+    get:
+      security:
+        - BearerAuth: []
+      tags:
+        - Statistics
+      summary: Get stats
+      parameters:
+        - in: query
+          name: code
+          schema:
+            type: string
+          required: false
+          description: The code of the url
+        
+          
+      responses:
+        "200":
+          description: Stats found
+          content:
+            application/json:
+              type: Object
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "404":
+          description: Stats not found
           content:
             application/json:
               schema:

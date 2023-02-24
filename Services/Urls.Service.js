@@ -19,7 +19,7 @@ const onUrlClick = async (code, longUrl, username) => {
     shortUrl: code,
     longUrl: longUrl,
     username: username,
-    createdAt: new Date(),
+    clickedAt: new Date(),
   });
 
   const user = await UserModel.findOne({ email: username }).exec();

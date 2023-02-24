@@ -34,7 +34,7 @@ db.once("open", () => console.log("connected to database"));
 
 // postgres
 sequelize
-  .sync()
+  .sync({force: false})
   .then(() => {
     console.log("Database & tables created!");
   })
@@ -56,6 +56,7 @@ app.use("/auth", authRouter);
 app.use(verifyJWT)
 app.use("/users", usersRouter);
 app.use("/urls", require("./routes/urls"));
+app.use("/stats", require("./routes/statistics"));
 
 // exceptions handler
 app.use((err, req, res, next) => {
